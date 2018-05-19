@@ -56,3 +56,33 @@ margin-top:10px;}
     margin:auto;
     width: 100%;
     height: auto;}
+.orderTable {
+
+	margin-top:70px;
+}
+
+.centerText {
+	text-align:center;
+}
+.centerButton button {
+	display: block;
+	margin: auto;
+}
+
+.table td {
+	text-align: center;
+
+	margin: auto;
+}
+
+.table tr {
+	text-align: center;
+	margin: auto;
+}
+
+.spaceTop {
+	margin-top: 30px;
+}
+
+
+

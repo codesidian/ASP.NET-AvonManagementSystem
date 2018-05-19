@@ -8,21 +8,25 @@
     <title>Avon Management System</title>
 
 
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
     <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
 
-    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+
+	<link href="css/bootstrap-select.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<script src="js/sorttable.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
 
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Avon Management System</a>
+        <a class="navbar-brand " href="Home.aspx">Avon Management System</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -30,20 +34,21 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
-              <a class="nav-link" href="index.html">Home </a>
+              <a id="menuCampaign" class="nav-link" href="Campaigns.aspx" runat="server">Campaigns</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="campaigns.html">Campaigns</a>
+              <a id="menuOrder" class="nav-link" href="Orders.aspx" runat="server">Orders</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
+              <a  class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Quick Access
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Customers</a>
-                <a class="dropdown-item" href="#">Create Order</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Access Data</a>
+                <a id="menuCreateCustomer" class="dropdown-item" href="#" runat="server">Create Customers</a>
+                <a id="menuCreateOrder" class="dropdown-item" href="CreateOrder.aspx" runat="server">Create Order</a>
+                <a id="menuCreateCampaign" class="dropdown-item" href="#" runat="server">Create Campaign</a>
+				  <div class="dropdown-divider"></div>
+                <a id="menuAccessData" class="dropdown-item" href="#">Access Data</a>
               </div>
             </li>
   
@@ -53,7 +58,11 @@
       </nav>
        <form id="form1" runat="server">
     <div>
+
+		<asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
         <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+        	
         
         </asp:ContentPlaceHolder>
     </div>
