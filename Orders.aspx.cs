@@ -14,7 +14,24 @@ public partial class _Default : System.Web.UI.Page
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{
-        mainCompleteOrderByID(1);
+        ClientScript.GetPostBackEventReference(this, e.ToString());
+        if (Request.Form["__EVENTTARGET"] == "mainCompleteOrderByID")
+        {
+
+
+
+            mainCompleteOrderByID(Convert.ToInt32(Request.Form["__EVENTARGUMENT"]));
+            ddlSelectCampaign_Orders_SelectedIndexChanged(sender, e);
+        }
+
+        if (Request.Form["__EVENTTARGET"] == "completeCustCampaignOrder")
+        {
+
+
+
+            completeCustCampaignOrder(Request.Form["__EVENTARGUMENT"]);
+            ddlSelectCampaign_Orders_SelectedIndexChanged(sender, e);
+        }
 
         if (!this.IsPostBack)
 		{
@@ -135,14 +152,19 @@ public partial class _Default : System.Web.UI.Page
 			if (IsComplete(id)) { html.Append("<td ><h2> <div class=\"centerText badge badge-success\" >  <i class=\"fa fa-check\" ><div style=\"display:none\">Yes</div></i>  </div> </h2> </td>"); }
 			else { html.Append("<td ><h2> <div class=\"centerText badge badge-danger\" >		<i class=\"fa fa-times\" ><div style=\"display:none\">No</div></i>		</div> </h2> </td>"); }
 
-			/*
+            /*
 		
 			 onclick=\"window.location = 'ViewOrder.aspx?customerID=" + id + "&campaignID=" + campaignID + "';\"
 			 
 			 */
 
-			html.Append("<td ><button type=\"button\" class=\" centerButton btn btn-primary  \"		data-toggle=\"modal\" data-target=\".bd-example-modal-lg" + id + " \">View</button></td> " +
-                "<td><button type=\"button\" class=\"btn btn-warning  centerButton\" OnClick=\"mainCompleteOrderByID("+id+")\">Complete</button></td>" +
+            string ids;
+            ids = id.ToString() + ";" + campaignID.ToString();
+
+            
+
+            html.Append("<td ><button type=\"button\" class=\" centerButton btn btn-primary  \"		data-toggle=\"modal\" data-target=\".bd-example-modal-lg" + id + " \">View</button></td> " +
+                "<td><button type=\"button\" class=\"btn btn-warning  centerButton\"  onclick=\"javascript:__doPostBack('completeCustCampaignOrder','" + ids + "')\">" + ids+"Complete</button></td>" +
 				"  </tr> "+ "<div class=\"modal fade bd-example-modal-lg" + id + " \" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\"> <div class=\"modal-dialog modal-lg\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"exampleModalLabel\">"+ firstname + "'s Order - Campaign No "+ campaignNumber + "</h5><button type = \"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div><div class=\"modal-body\">" + getOrderInfo(id, campaignID) + "</div></div></div></div>");
 		}
 
@@ -300,7 +322,7 @@ public partial class _Default : System.Web.UI.Page
 							if (checkOrderStatus(id)) { html.Append("<div class=\"col-md-2\"><h2><div class=\"centerText badge badge-success\"><i class=\"fa fa-check\" ></i></div></h2></div>"); }
 							else { html.Append("<div class=\"col-md-2\"><h2><div class=\"centerText badge badge-danger\" ><i class=\"fa fa-times\"></i></div></h2></div>"); }
 
-							html.Append("<div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-warning\" OnClick=\"mainCompleteOrderByID("+ row["Id"] + ")\"> Complete </button></div>");
+							html.Append("<div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-warning\" onclick=\"javascript:__doPostBack('mainCompleteOrderByID','" + id + "')\"> Complete </button></div>");
 							html.Append("</div>");
 
 
@@ -450,6 +472,42 @@ public partial class _Default : System.Web.UI.Page
 
 	}
 
+    public static int completeCustCampaignOrder(string ids)
+    {
+        System.Diagnostics.Debug.WriteLine(ids);
+        string[] args = ids.Split(';');
+        int customerID;
+        int campaignID;
+
+        customerID = Convert.ToInt32(args[0]);
+        campaignID = Convert.ToInt32(args[1]);
+        string constr = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            
+            using (SqlCommand cmd = new SqlCommand("completeCustomerCampaignOrder", con))
+            {
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@customerID", customerID);
+                cmd.Parameters.AddWithValue("@campaignID", campaignID);
+
+
+
+
+                cmd.Connection = con;
+
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+
+
+            }
+        }
+
+        return 0;
+    }
 
     public static int mainCompleteOrderByID(int orderID)
     {
