@@ -14,7 +14,9 @@ public partial class _Default : System.Web.UI.Page
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{
-		if (!this.IsPostBack)
+        mainCompleteOrderByID(1);
+
+        if (!this.IsPostBack)
 		{
 			ddlSelectCampaign_Orders_SelectedIndexChanged(sender, e);
 		}
@@ -140,7 +142,7 @@ public partial class _Default : System.Web.UI.Page
 			 */
 
 			html.Append("<td ><button type=\"button\" class=\" centerButton btn btn-primary  \"		data-toggle=\"modal\" data-target=\".bd-example-modal-lg" + id + " \">View</button></td> " +
-				"<td><button type=\"button\" class=\"btn btn-warning  centerButton\">Complete</button></td>" +
+                "<td><button type=\"button\" class=\"btn btn-warning  centerButton\" OnClick=\"mainCompleteOrderByID("+id+")\">Complete</button></td>" +
 				"  </tr> "+ "<div class=\"modal fade bd-example-modal-lg" + id + " \" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\"> <div class=\"modal-dialog modal-lg\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"exampleModalLabel\">"+ firstname + "'s Order - Campaign No "+ campaignNumber + "</h5><button type = \"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div><div class=\"modal-body\">" + getOrderInfo(id, campaignID) + "</div></div></div></div>");
 		}
 
@@ -298,7 +300,7 @@ public partial class _Default : System.Web.UI.Page
 							if (checkOrderStatus(id)) { html.Append("<div class=\"col-md-2\"><h2><div class=\"centerText badge badge-success\"><i class=\"fa fa-check\" ></i></div></h2></div>"); }
 							else { html.Append("<div class=\"col-md-2\"><h2><div class=\"centerText badge badge-danger\" ><i class=\"fa fa-times\"></i></div></h2></div>"); }
 
-							html.Append("<div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-warning\"> Complete </button></div>");
+							html.Append("<div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-warning\" OnClick=\"mainCompleteOrderByID("+ row["Id"] + ")\"> Complete </button></div>");
 							html.Append("</div>");
 
 
@@ -448,13 +450,46 @@ public partial class _Default : System.Web.UI.Page
 
 	}
 
-	protected void Button2_Click(object sender, EventArgs e)
+
+    public static int mainCompleteOrderByID(int orderID)
+    {
+
+
+        string constr = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+
+            using (SqlCommand cmd = new SqlCommand("completeOrder", con))
+            {
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@orderID", orderID);
+
+
+
+                cmd.Connection = con;
+
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+
+
+            }
+        }
+
+        return 0;
+    }
+
+    protected void Button2_Click(object sender, EventArgs e)
 	{
-		
-	}
+       // mainCompleteOrderByID(1);
+    }
 
 	protected void Button1_Click(object sender, EventArgs e)
 	{
 		Response.Redirect("CreateOrder.aspx");
 	}
+
+   
 }
