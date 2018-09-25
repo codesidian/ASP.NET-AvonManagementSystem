@@ -134,7 +134,6 @@ public partial class _Default : System.Web.UI.Page
 
     protected void processOrder(String json)
     {
-        System.Diagnostics.Debug.WriteLine(json);
         int campaignID = 0, campaignNumber = 0,customerID=0;
         try
         {
@@ -145,20 +144,15 @@ public partial class _Default : System.Web.UI.Page
         catch
         {
         }
+        System.Diagnostics.Debug.WriteLine(json);
 
-        // String objstring = JsonConvert.SerializeObject(json);
+  
         Order obj = JsonConvert.DeserializeObject<Order>(json);
 
-        //System.Diagnostics.Debug.WriteLine(objstring);
+  
+        System.Diagnostics.Debug.WriteLine(obj.Products[0].ProductName);
 
-      //  System.Diagnostics.Debug.WriteLine(json);
-
-        //List<Order> ord = obj.orders;
-       // String test = JsonConvert.SerializeObject(obj);
-
-       // System.Diagnostics.Debug.WriteLine(test);
-
-        //System.Diagnostics.Debug.WriteLine(ord);
+  
 
     }
 

@@ -7,29 +7,42 @@ function sendOrder() {
      var table = document.getElementById("table");
     var prodid = ' '; var prodname = ' '; var prodquant = ' '; var prodprice = ' ';
 
+    var pr = "{\"products\":[{";
      for (var i = 1, row; row = table.rows[i]; i++) {
          var product = '{"productID":"","productName":"","quantity":"","price":""}';
          var prodobj = JSON.parse(product);
         for (var j = 0, col; col = row.cells[j]; j++) {
-            if (j == 1) { prodid = col.getElementsByClassName("form-control")[0].value; } 
-            else if (j == 2) { prodname = col.getElementsByClassName("form-control")[0].value; }
-            else if (j == 3) { prodquant = col.getElementsByClassName("form-control")[0].value;  }
-            else if (j == 4) { prodprice = col.getElementsByClassName("form-control")[0].value;  }
+            if (j == 1) {
+                prodid = col.getElementsByClassName("form-control")[0].value;
+                pr += "\"productID\":\"" + prodid + "\",";
+            } 
+            else if (j == 2) {
+                prodname = col.getElementsByClassName("form-control")[0].value;
+                pr += "\"productName\":\"" + prodname + "\",";
+            }
+            else if (j == 3) {
+                prodquant = col.getElementsByClassName("form-control")[0].value;
+                pr += "\"quantity\":\"" + prodquant + "\",";}
+            else if (j == 4) {
+                prodprice = col.getElementsByClassName("form-control")[0].value;
+                pr += "\"price\":\"" + prodprice + "\"}";}
          }
          prodobj.productID = prodid;
          prodobj.productName = prodname;
          prodobj.quantity = prodquant;
          prodobj.price = prodprice;
          var prodstr = JSON.stringify(prodobj);
+         //alert(prodstr);
          ordobj['products'].push(prodobj);
 
          var curob = JSON.stringify(ordobj);
+         //alert(curob);
          testarea.innerHTML = curob; 
     }
 
     var jsonStr = JSON.stringify(ordobj);
     var sss = '{"products":[{"productID":"111","productName":"1","quantity":"1","price":"1"},{"productID":"2","productName":"2","quantity":"2","price":"2"}]}'
-    __doPostBack('processOrder', JSON.stringify(jsonStr));
+    __doPostBack('processOrder', JSON.stringify(ordobj));
 }
 
 
