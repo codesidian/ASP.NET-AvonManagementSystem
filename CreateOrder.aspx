@@ -21,8 +21,6 @@
 
 	</div>
 
-
-	
 	<br />
 	<div class="container ">
 
@@ -36,7 +34,9 @@
         <div class="col-sm-4 " align="center"><asp:DropDownList class="btn btn-secondary btn-lg dropdown-toggle"   ID="ddlSelectCampaign_Orders" runat="server" DataSourceID="sqlCampaignDS" DataTextField="CampaignNumber" DataValueField="Id" AutoPostBack="True" ></asp:DropDownList></div>
         <div class="col-sm-4 " align="center"><asp:DropDownList class="btn btn-secondary btn-lg dropdown-toggle"   ID="ddlSelectCustomers" runat="server" DataSourceID="sqlCustomerDS" DataTextField="Name" DataValueField="Id" AutoPostBack="True" OnSelectedIndexChanged="ddlSelectCustomers_SelectedIndexChanged" ></asp:DropDownList></div>
         <div class="col-sm-4 " align="center">
-			<asp:Button ID="Button1" runat="server" Text="Create Order" class="btn btn-lg btn-info" /></div>
+			<button   type="button" class="btn btn-success btn-lg"  onclick="sendOrder();">Create Order</button>
+            <span style="display:none">onclick="javascript:__doPostBack('processOrder','JSON.stringify(orderObj))'"</span>
+        </div>
     </div>
 
 
@@ -44,28 +44,51 @@
 		</div>
     <br />
     
-        <table class="table">
-       <thead class="thead-dark"><tr>
-        <th> </th>
-        <th>Product ID</th>
+        <Table id="table" class="table">
+       <thead class="thead">
+        <tr>
+        <th></th>
+        <th>Product Number</th>
         <th>Product Name</th>
         <th>Quantity</th>
         <th>Price</th>
-        </tr></thead>
-
-        <tr>
-        <td>
-
-            <asp:Button ID="AddRow" runat="server" Text="+" class="btn btn-success" />
-
-        </td>
-        <td>123</td>
-        <td>test</td>
-        <td>42</td>
-        <td>£100000</td>
+        <th></th>
         </tr>
-        </table>
 
+       </thead>
+
+<tr>
+        <td>
+            <button class="btn btn-primary" onclick="AddRow();"><i class="fa fa-plus"></i></button>
+        </td>
+        <td>            
+            <div class="form-group">
+            <input type="text" class="form-control" placeholder="Product Number">
+            </div>
+        </td>
+        <td>
+            <div class="form-group">
+            <input type="text" class="form-control" placeholder="Product Name">
+            </div>
+        </td>
+        <td>
+            <div class="form-group">
+            <input type="text" class="form-control" placeholder="0">
+            </div>
+            
+        </td>
+
+        <td>
+            <div class="form-group input-icon">
+            <input type="text" class="form-control" placeholder="0.00">
+            <i>£</i>
+        </div>
+        </td>
+        <td></td>
+</tr>
+        </Table>
+
+    <h4><div id="testarea"></div></h4>
     <div class="container">
 
 		<asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>

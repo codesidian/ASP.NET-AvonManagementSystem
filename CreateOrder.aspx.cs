@@ -8,15 +8,52 @@ using System.Data;
 using System.Text;
 using System.Configuration;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
+
+
+public class Product
+{
+    [JsonProperty("productID")]
+    public string ProductId { get; set; }
+
+    [JsonProperty("productName")]
+    public string ProductName { get; set; }
+
+    [JsonProperty("quantity")]
+    public string Quantity { get; set; }
+
+    [JsonProperty("price")]
+    public string Price { get; set; }
+}
+
+public class Order
+{
+    [JsonProperty("products")]
+    public List<Product> Products { get; set; }
+}
 
 public partial class _Default : System.Web.UI.Page
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{
+
+
+      
+        ClientScript.GetPostBackEventReference(this, e.ToString());
+        if (Request.Form["__EVENTTARGET"] == "processOrder")
+        {
+
+            System.Diagnostics.Debug.WriteLine("Requeste Received");
+
+            processOrder(Request.Form["__EVENTARGUMENT"]);
+        }
+
+
+
         //createProductRow(sender, e);
         if (!this.IsPostBack)
             {
-            createProductRow(sender, e);
+          //  createProductRow(sender, e);
             }
         
 
@@ -94,6 +131,37 @@ public partial class _Default : System.Web.UI.Page
     }
 
 
+
+    protected void processOrder(String json)
+    {
+        System.Diagnostics.Debug.WriteLine(json);
+        int campaignID = 0, campaignNumber = 0,customerID=0;
+        try
+        {
+            customerID = Convert.ToInt32(ddlSelectCustomers.SelectedItem.Value);
+            campaignID = Convert.ToInt32(ddlSelectCampaign_Orders.SelectedItem.Value);
+            campaignNumber = Convert.ToInt32(ddlSelectCampaign_Orders.SelectedItem.Text);
+        }
+        catch
+        {
+        }
+
+        // String objstring = JsonConvert.SerializeObject(json);
+        Order obj = JsonConvert.DeserializeObject<Order>(json);
+
+        //System.Diagnostics.Debug.WriteLine(objstring);
+
+      //  System.Diagnostics.Debug.WriteLine(json);
+
+        //List<Order> ord = obj.orders;
+       // String test = JsonConvert.SerializeObject(obj);
+
+       // System.Diagnostics.Debug.WriteLine(test);
+
+        //System.Diagnostics.Debug.WriteLine(ord);
+
+    }
+
     protected void createProductRow(object sender, EventArgs e)
     {
 
@@ -120,5 +188,10 @@ public partial class _Default : System.Web.UI.Page
     protected void ddlSelectCustomers_SelectedIndexChanged(object sender, EventArgs e)
     {
        
+    }
+
+    protected void Button1_Click1(object sender, EventArgs e)
+    {
+        
     }
 }
