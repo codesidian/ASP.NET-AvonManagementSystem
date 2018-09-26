@@ -14,6 +14,7 @@ public partial class _Default : System.Web.UI.Page
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{
+        ddlSelectCampaign_Orders_SelectedIndexChanged(sender, e);
         ClientScript.GetPostBackEventReference(this, e.ToString());
         if (Request.Form["__EVENTTARGET"] == "mainCompleteOrderByID")
         {
@@ -61,16 +62,17 @@ public partial class _Default : System.Web.UI.Page
 				cmd.CommandType = CommandType.StoredProcedure;
 				cmd.Parameters.AddWithValue("@campaign", campaignID);
 
-				using (SqlDataAdapter sda = new SqlDataAdapter())
-				{
+                SqlDataAdapter sda = new SqlDataAdapter();
+				
+
 					cmd.Connection = con;
 					sda.SelectCommand = cmd;
-					using (DataTable dt = new DataTable())
-					{
+                DataTable dt = new DataTable();
+					
 						sda.Fill(dt);
 						return dt;
-					}
-				}
+					
+				
 			}
 		}
 	}

@@ -152,8 +152,44 @@ public partial class _Default : System.Web.UI.Page
   
         System.Diagnostics.Debug.WriteLine(obj.Products[0].ProductName);
 
-  
+        addOrder(obj,customerID,campaignID);
 
+        
+
+    }
+
+    protected void addOrder(Order order,int customerID,int campaignID)
+    {
+        string constr = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        for (int i = 0; i < order.Products.Count(); i++) {
+
+            
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+
+                using (SqlCommand cmd = new SqlCommand("createOrder", con))
+                {
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@customerID", customerID);
+                    cmd.Parameters.AddWithValue("@campaignID", campaignID);
+                    cmd.Parameters.AddWithValue("@productID", order.Products[i].ProductId);
+                    cmd.Parameters.AddWithValue("@quantity", order.Products[i].Quantity);
+                    cmd.Parameters.AddWithValue("@name", order.Products[i].ProductName);
+                    cmd.Parameters.AddWithValue("@price", order.Products[i].Price);
+                     
+                    cmd.Connection = con;
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+
+
+                }
+            }
+
+          
+        }
     }
 
     protected void createProductRow(object sender, EventArgs e)

@@ -9,7 +9,7 @@
 
 
 
-	<asp:SqlDataSource ID="sqlCampaignDS" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [Id], [CampaignNumber], [IsActive] FROM [Campaign]"></asp:SqlDataSource>
+	<asp:SqlDataSource ID="sqlCampaignDS" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [Id], [CampaignNumber], [IsActive] FROM [dbo].[Campaign]"></asp:SqlDataSource>
 
 	</div>
 

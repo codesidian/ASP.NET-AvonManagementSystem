@@ -16,8 +16,8 @@
 
 
 
-	<asp:SqlDataSource ID="sqlCampaignDS" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [Id], [CampaignNumber], [IsActive] FROM [Campaign]"></asp:SqlDataSource>
-	<asp:SqlDataSource ID="sqlCustomerDS" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [Id], Concat([FirstName], ' ' , [LastName]) as Name FROM [Customer]"></asp:SqlDataSource>
+	<asp:SqlDataSource ID="sqlCampaignDS" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [Id], [CampaignNumber], [IsActive] FROM [dbo].[Campaign]"></asp:SqlDataSource>
+	<asp:SqlDataSource ID="sqlCustomerDS" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [Id], Concat([FirstName], ' ' , [LastName]) as Name FROM [dbo].[Customer]"></asp:SqlDataSource>
 
 	</div>
 
