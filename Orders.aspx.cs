@@ -93,7 +93,8 @@ public partial class _Default : System.Web.UI.Page
 		//dt.Columns.Remove("Id");
 		//Building an HTML string.
 		StringBuilder html = new StringBuilder();
-		string firstname;
+        StringBuilder modal = new StringBuilder();
+        string firstname;
 		int campaignID = 0,campaignNumber=0;
 
 		try
@@ -161,11 +162,17 @@ public partial class _Default : System.Web.UI.Page
             string ids;
             ids = id.ToString() + ";" + campaignID.ToString();
 
-            
+
 
             html.Append("<td><button type=\"button\" class=\" centerButton btn btn-primary  \"		data-toggle=\"modal\" data-target=\".bd-example-modal-lg" + id + " \">View</button></td> " +
-                "<td><button type=\"button\" class=\"btn btn-warning  centerButton\"  onclick=\"javascript:__doPostBack('completeCustCampaignOrder','" + ids + "')\">" + "" +"Complete</button></td>" +
-				"</tr>"+ "<div class=\"modal fade bd-example-modal-lg" + id + " \" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\"> <div class=\"modal-dialog modal-lg\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"exampleModalLabel\">"+ firstname + "'s Order - Campaign No "+ campaignNumber + "</h5><button type = \"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div><div class=\"modal-body\">" + getOrderInfo(id, campaignID) + "</div></div></div></div>");
+                "<td><button type=\"button\" class=\"btn btn-warning  centerButton\"  onclick=\"javascript:__doPostBack('completeCustCampaignOrder','" + ids + "')\">" + "" + "Complete</button></td>" +
+                "</tr>");
+            modal.Append(
+            "<div class=\"modal fade bd-example-modal-lg" + id + 
+            " \" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\"> <div class=\"modal-dialog modal-lg\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"exampleModalLabel\">"
+            + firstname + "'s Order - Campaign No "
+            + campaignNumber + "</h5><button type = \"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div><div class=\"modal-body\">"
+            + getOrderInfo(id, campaignID) + "</div></div></div></div>");
 		}
 
 		//Table end.
@@ -173,8 +180,10 @@ public partial class _Default : System.Web.UI.Page
 
 		//Append the HTML string to Placeholder.
 		PlaceHolder1.Controls.Add(new Literal { Text = html.ToString() });
+        testPlaceholder.Controls.Add(new Literal { Text = modal.ToString() });
 
-	}
+
+    }
 
 	private int getActiveCampaignNumber() {
 		int campaignNumber = 0;
@@ -245,114 +254,81 @@ public partial class _Default : System.Web.UI.Page
 						sda.Fill(dt);
 
 						//Table start.
-						html.Append("<div class=\" container \">");
+						html.Append("<table class=\"table sortable\" >");
 
 						dt.Columns.Remove("Completed");
 						dt.Columns.Remove("CustomerID");
 						dt.Columns.Remove("CampaignID");
 						//Building the Data rows.
 						int id;
-						html.Append("<div class=\"row\">");
-						html.Append("<div class=\"col-md-2\">");
-						html.Append("Product Number");
-						html.Append("</div>");
+						html.Append("<thead>");
 
-						html.Append("<div class=\"col-md-2\">");
-						html.Append("Quantity");
-						html.Append("</div>");
+                        html.Append("<th>");
+                        html.Append("Product Number");
+						html.Append("</th>");
 
-						html.Append("<div class=\"col-md-2\">");
-						html.Append("Name");
-						html.Append("</div>");
 
-						html.Append("<div class=\"col-md-2\">");
-						html.Append("Price");
-						html.Append("</div>");
+                        html.Append("<th>");
+                        html.Append("Quantity");
+						html.Append("</th>");
 
-						html.Append("<div class=\"col-md-2\">");
+
+                        html.Append("<th>");
+                        html.Append("Name");
+						html.Append("</th>");
+
+
+                        html.Append("<th>");
+                        html.Append("Price");
+						html.Append("</th>");
+
+						html.Append("<th>");
 						html.Append("Completed");
-						html.Append("</div>");
-						html.Append("</div>");
+						html.Append("</th>");
+
+                        html.Append("<th>");
+              
+                        html.Append("</th>");
 
 
 
-						html.Append("<div class=\"row\">");
-						html.Append("<div class=\"col-md-2\">");
-						html.Append("---------------");
-						html.Append("</div>");
 
-						html.Append("<div class=\"col-md-2\">");
-						html.Append("---------------");
-						html.Append("</div>");
-
-						html.Append("<div class=\"col-md-2\">");
-						html.Append("---------------");
-						html.Append("</div>");
-
-						html.Append("<div class=\"col-md-2\">");
-						html.Append("---------------");
-						html.Append("</div>");
-
-						html.Append("<div class=\"col-md-2\">");
-						html.Append("---------------");
-						html.Append("</div>");
-
-						html.Append("</div>");
+                        html.Append("</thead>");
 
 						
 						foreach (DataRow row in dt.Rows)
 						{
-							html.Append("<div class=\"row\">");
+							html.Append("<tr>");
 							foreach (DataColumn column in dt.Columns)
 							{
 								if (column.ColumnName != "Id")
 								{
-									html.Append("<div class=\"col-md-2\">");
+									html.Append("<td>");
 									if (column.ToString() == "Price") { html.Append(string.Format("{0:C}", Convert.ToDecimal(row["Price"].ToString()))); }
 									else
 										html.Append(row[column.ColumnName]);
 									
-									html.Append("</div>");
+									html.Append("</td>");
 
 								}
 								
 								
 							}
 							id = Convert.ToInt32(row["Id"].ToString());
-							if (checkOrderStatus(id)) { html.Append("<div class=\"col-md-2\"><h2><div class=\"centerText badge badge-success\"><i class=\"fa fa-check\" ></i></div></h2></div>"); }
-							else { html.Append("<div class=\"col-md-2\"><h2><div class=\"centerText badge badge-danger\" ><i class=\"fa fa-times\"></i></div></h2></div>"); }
+							if (checkOrderStatus(id)) { html.Append("<td><h2><div class=\"centerText badge badge-success\"><i class=\"fa fa-check\" ></i></div></h2></td>"); }
+							else { html.Append("<td><h2><div class=\"centerText badge badge-danger\" ><i class=\"fa fa-times\"></i></div></h2></td>"); }
 
-							html.Append("<div class=\"col-md-2\"><button type=\"button\" class=\"btn btn-warning\" onclick=\"javascript:__doPostBack('mainCompleteOrderByID','" + id + "')\"> Complete </button></div>");
-							html.Append("</div>");
+							html.Append("<td><button type=\"button\" class=\"btn btn-warning\" onclick=\"javascript:__doPostBack('mainCompleteOrderByID','" + id + "')\"> Complete </button></td>");
+							//html.Append("</div>");
 
 
 
-							html.Append("<div class=\"row\">");
-							html.Append("<div class=\"col-md-2\">");
-							html.Append("---------------");
-							html.Append("</div>");
 
-							html.Append("<div class=\"col-md-2\">");
-							html.Append("---------------");
-							html.Append("</div>");
-
-							html.Append("<div class=\"col-md-2\">");
-							html.Append("---------------");
-							html.Append("</div>");
-
-							html.Append("<div class=\"col-md-2\">");
-							html.Append("---------------");
-							html.Append("</div>");
-
-							html.Append("<div class=\"col-md-2\">");
-							html.Append("---------------");
-							html.Append("</div>");
-
-							html.Append("</div>");
+							html.Append("</<tr>");
 						}
 
 						//Table end.
-						html.Append("</div>");
+						html.Append("</table>");
 						return html.ToString();
 					}
 				}
