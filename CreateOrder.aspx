@@ -63,24 +63,24 @@
         </td>
         <td>            
             <div class="form-group">
-            <input type="text" class="form-control" placeholder="Product Number">
+            <input type="text" class="form-control" placeholder="Product Number" id="number">
             </div>
         </td>
         <td>
             <div class="form-group">
-            <input type="text" class="form-control" placeholder="Product Name">
+            <input type="text" class="form-control" placeholder="Product Name" id="name">
             </div>
         </td>
         <td>
             <div class="form-group">
-            <input type="text" class="form-control" placeholder="0">
+            <input type="text" class="form-control" placeholder="0" id="quantity">
             </div>
             
         </td>
 
         <td>
             <div class="form-group input-icon">
-            <input type="text" class="form-control" placeholder="0.00">
+            <input type="text" class="form-control" placeholder="0.00" id="price">
             <i>£</i>
         </div>
         </td>
@@ -91,7 +91,10 @@
     <h4><div id="testarea"></div></h4>
     <div class="container">
 
-		<asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
+		<asp:PlaceHolder ID="PlaceHolder1" runat="server">
+
+            <div id="testoutput"></div>
+		</asp:PlaceHolder>
 	</div>
 
 

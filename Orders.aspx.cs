@@ -8,13 +8,14 @@ using System.Data;
 using System.Text;
 using System.Configuration;
 using System.Data.SqlClient;
-
+using System.Threading;
 
 public partial class _Default : System.Web.UI.Page
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{
-        ddlSelectCampaign_Orders_SelectedIndexChanged(sender, e);
+       
+
         ClientScript.GetPostBackEventReference(this, e.ToString());
         if (Request.Form["__EVENTTARGET"] == "mainCompleteOrderByID")
         {
@@ -36,8 +37,10 @@ public partial class _Default : System.Web.UI.Page
 
         if (!this.IsPostBack)
 		{
-			ddlSelectCampaign_Orders_SelectedIndexChanged(sender, e);
-		}
+            
+            //ddlSelectCampaign_Orders_SelectedIndexChanged(sender, e);
+            ddlSelectCampaign_Orders_SelectedIndexChanged(sender, e);
+        }
 	}
 
 	private DataTable getOrdersByCampaign()
@@ -84,9 +87,9 @@ public partial class _Default : System.Web.UI.Page
 
 	protected void ddlSelectCampaign_Orders_SelectedIndexChanged(object sender, EventArgs e)
 	{
-
-		//Populating a DataTable from database.
-		DataTable dt = this.getOrdersByCampaign();
+        testPlaceholder.Controls.Add(new Literal { Text = "initialised" });
+        //Populating a DataTable from database.
+        
 		//dt.Columns.Remove("Id");
 		//Building an HTML string.
 		StringBuilder html = new StringBuilder();
@@ -110,7 +113,8 @@ public partial class _Default : System.Web.UI.Page
 
 		//Building the Header row.
 		html.Append("<thead class=\"  thead-dark\"> <tr>");
-		foreach (DataColumn column in dt.Columns)
+        DataTable dt = this.getOrdersByCampaign();
+        foreach (DataColumn column in dt.Columns)
 		{
 			if (column.ColumnName!="ID") {
 				html.Append("<th>");
@@ -146,28 +150,22 @@ public partial class _Default : System.Web.UI.Page
 			// ############################################################################################
 
 
-
-
-			// #############################################################################################
+			// ############################################################################################
 
 
 			if (IsComplete(id)) { html.Append("<td ><h2> <div class=\"centerText badge badge-success\" >  <i class=\"fa fa-check\" ><div style=\"display:none\">Yes</div></i>  </div> </h2> </td>"); }
 			else { html.Append("<td ><h2> <div class=\"centerText badge badge-danger\" >		<i class=\"fa fa-times\" ><div style=\"display:none\">No</div></i>		</div> </h2> </td>"); }
 
-            /*
-		
-			 onclick=\"window.location = 'ViewOrder.aspx?customerID=" + id + "&campaignID=" + campaignID + "';\"
-			 
-			 */
+            /* onclick=\"window.location = 'ViewOrder.aspx?customerID=" + id + "&campaignID=" + campaignID + "';\" */
 
             string ids;
             ids = id.ToString() + ";" + campaignID.ToString();
 
             
 
-            html.Append("<td ><button type=\"button\" class=\" centerButton btn btn-primary  \"		data-toggle=\"modal\" data-target=\".bd-example-modal-lg" + id + " \">View</button></td> " +
+            html.Append("<td><button type=\"button\" class=\" centerButton btn btn-primary  \"		data-toggle=\"modal\" data-target=\".bd-example-modal-lg" + id + " \">View</button></td> " +
                 "<td><button type=\"button\" class=\"btn btn-warning  centerButton\"  onclick=\"javascript:__doPostBack('completeCustCampaignOrder','" + ids + "')\">" + "" +"Complete</button></td>" +
-				"  </tr> "+ "<div class=\"modal fade bd-example-modal-lg" + id + " \" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\"> <div class=\"modal-dialog modal-lg\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"exampleModalLabel\">"+ firstname + "'s Order - Campaign No "+ campaignNumber + "</h5><button type = \"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div><div class=\"modal-body\">" + getOrderInfo(id, campaignID) + "</div></div></div></div>");
+				"</tr>"+ "<div class=\"modal fade bd-example-modal-lg" + id + " \" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\"> <div class=\"modal-dialog modal-lg\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"exampleModalLabel\">"+ firstname + "'s Order - Campaign No "+ campaignNumber + "</h5><button type = \"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div><div class=\"modal-body\">" + getOrderInfo(id, campaignID) + "</div></div></div></div>");
 		}
 
 		//Table end.
