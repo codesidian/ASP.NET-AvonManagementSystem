@@ -49,7 +49,7 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a id="menuCreateCustomer" class="dropdown-item" href="#" runat="server">Create Customers</a>
                 <a id="menuCreateOrder" class="dropdown-item" href="CreateOrder.aspx" runat="server">Create Order</a>
-                <a id="menuCreateCampaign" class="dropdown-item" href="#" runat="server">Create Campaign</a>
+                <a id="menuCreateCampaign" class="dropdown-item" href="CreateCampaign.aspx" runat="server">Create Campaign</a>
 				  <div class="dropdown-divider"></div>
                 <a id="menuAccessData" class="dropdown-item" href="#">Access Data</a>
               </div>
